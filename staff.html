@@ -34,7 +34,15 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <style>
+        .zoom-effect {
+            transition: transform 0.5s;
+            /* Animation */
+        }
 
+        .zoom-effect:hover {
+            transform: scale(1.12);
+            /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
     </style>
 </head>
 
@@ -55,11 +63,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                    <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="staff.html" class="nav-item nav-link active">Staff</a>
                     <a href="rules.html" class="nav-item nav-link">Rules</a>
                     <a href="resources.html" class="nav-item nav-link">Resources</a>
-                    <a href="alumni.html" class="nav-item nav-link">Alumni</a>
-                    <a href="equipment-instructions.html" class="nav-item nav-link">Instructions for working with equipment</a>
+                    <a href="equipment-instructions.html" class="nav-item nav-link">Instructions for working with
+                        equipment</a>
                 </div>
             </div>
         </nav>
@@ -76,26 +85,32 @@
                 <div class="row g-5">
                     <div class="col-lg-4">
                         <div class="row g-5">
-                            <div class="col-12 wow zoomIn" data-wow-delay="0.2s">
-                                <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
-                                    style="width: 60px; height: 60px;">
-                                    <i class="fa fa-book text-white" style="font-size: 32px;"></i>
+                            <a href="rules.html">
+                                <div class="col-12 wow zoomIn zoom-effect" data-wow-delay="0.2s">
+                                    <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
+                                        style="width: 60px; height: 60px;">
+                                        <i class="fa fa-book text-white" style="font-size: 32px;"></i>
+                                    </div>
+                                    <h4>Научете правилата</h4>
+                                    <p class="mb-0">Правилата са ключови за
+                                        поддържане на високи професионални и етични стандарти.</p>
                                 </div>
-                                <h4>Научете правилата</h4>
-                                <p class="mb-0">Правилата са ключови за
-                                    поддържане на високи професионални и етични стандарти.</p>
-                            </div>
-                            <div class="col-12 wow zoomIn" data-wow-delay="0.6s">
-                                <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
-                                    style="width: 60px; height: 60px;">
-                                    <i class="fa fa-user-clock text-white" style="font-size: 32px;"></i>
+                            </a>
+                            <a href="resources.html">
+                                <div class="col-12 wow  zoomIn zoom-effect" data-wow-delay="0.6s">
+                                    <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
+                                        style="width: 60px; height: 60px;">
+                                        <i class="fa fa-user-clock text-white" style="font-size: 32px;"></i>
+                                    </div>
+                                    <h4>Използвайте полезни ресурси</h4>
+                                    <p class="mb-0">Използването на нашите ресурси е ключово за разбиране на
+                                        отговорностите
+                                        и компетенциите на всеки член на екипа, както и за установяване на най-удобното
+                                        време за срещи и консултации, което улеснява ефективната комуникация и
+                                        оптимизира
+                                        работните процеси.</p>
                                 </div>
-                                <h4>Използвайте полезни ресурси</h4>
-                                <p class="mb-0">Използването на нашите ресурси е ключово за разбиране на отговорностите
-                                    и компетенциите на всеки член на екипа, както и за установяване на най-удобното
-                                    време за срещи и консултации, което улеснява ефективната комуникация и оптимизира
-                                    работните процеси.</p>
-                            </div>
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-4  wow zoomIn" data-wow-delay="0.9s" style="min-height: 350px;">
@@ -106,25 +121,31 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="row g-5">
-                            <div class="col-12 wow zoomIn" data-wow-delay="0.4s">
-                                <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
-                                    style="width: 60px; height: 60px;">
-                                    <i class="fa fa-tools text-white" style="font-size: 32px;"></i>
+                            <a href="equipment-instructions.html">
+                                <div class="col-12 wow zoomIn zoom-effect" data-wow-delay="0.4s">
+                                    <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
+                                        style="width: 60px; height: 60px;">
+                                        <i class="fa fa-tools text-white" style="font-size: 32px;"></i>
+                                    </div>
+                                    <h4>Прочетете упътванията за работа с оборудването</h4>
+                                    <p class="mb-0">Познаването на указанията позволява ефективно и ефикасно използване
+                                        на
+                                        оборудването, което води до по-висока продуктивност и по-добри резултати в
+                                        проучванията.</p>
                                 </div>
-                                <h4>Прочетете упътванията за работа с оборудването</h4>
-                                <p class="mb-0">Познаването на указанията позволява ефективно и ефикасно използване на
-                                    оборудването, което води до по-висока продуктивност и по-добри резултати в
-                                    проучванията.</p>
-                            </div>
-                            <div class="col-12 wow zoomIn" data-wow-delay="0.8s">
-                                <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
-                                    style="width: 60px; height: 60px;">
-                                    <i class="fa fa-user text-white" style="font-size: 32px;"></i>
+                            </a>
+                            <a href="alumni.html">
+                                <div class="col-12 wow zoomIn zoom-effect" data-wow-delay="0.8s">
+                                    <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
+                                        style="width: 60px; height: 60px;">
+                                        <i class="fa fa-user text-white" style="font-size: 32px;"></i>
+                                    </div>
+                                    <h4>Научете кой е работил при нас</h4>
+                                    <p class="mb-0">Научете за личностите, които са били част от нашия екип и имат
+                                        принос
+                                        към развитието и прогреса на нашата катедра и история.</p>
                                 </div>
-                                <h4>Научете кой е работил при нас</h4>
-                                <p class="mb-0">Научете за личностите, които  са били част от нашия екип и имат принос
-                                    към развитието и прогреса на нашата катедра и история.</p>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -140,7 +161,7 @@
                         <div
                             class="d-flex flex-column align-items-center justify-content-center text-center h-100 bg-primary p-4">
                             <a href="index.html" class="navbar-brand">
-                                <h1 class="m-0 text-white"><i class="fa fa-flask me-2"></i>LCPE</h1>
+                                <h1 class="m-0 text-white"><i class="fa fa-flask me-2"></i>DCPE</h1>
                             </a>
                             <p class="mt-3 mb-4">Pioneering progress at the intersection of chemical and pharmaceutical
                                 engineering. Committed to fostering innovation, research, and professional growth.</p>
@@ -212,7 +233,7 @@
                 <div class="row justify-content-end">
                     <div class="col-lg-8 col-md-6">
                         <div class="d-flex align-items-center justify-content-center" style="height: 75px;">
-                            <p class="mb-0">&copy; <a class="text-white border-bottom" href="#">LCPE</a>. All
+                            <p class="mb-0">&copy; <a class="text-white border-bottom" href="#">DCPE</a>. All
                                 Rights Reserved.
 
                                 <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
