@@ -1,0 +1,551 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Faculty of Chemistry and Pharmacy, Sofia University</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="{% static 'images/logo2.png' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link rel="stylesheet" href="{% static 'lib/animate/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Template Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile-details.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+    <style>
+        .zoom-effect {
+            transition: transform 0.5s;
+            /* Animation */
+        }
+
+        .zoom-effect:hover {
+            transform: scale(1.12);
+            /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
+        .container{
+            margin-top:150px!important;
+        }
+
+        .suggestions {
+            margin-top:6px;
+            margin-left:10px;
+            border: 1px solid #ccc;
+            max-height: 100px;
+            overflow-y: scroll;
+        }
+        
+        .suggestions div {
+            padding: 5px;
+            cursor: pointer;
+        }
+        
+        .suggestions div:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+
+<body data-members="{{ members|safe }}">
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="container-fluid position-relative p-0">
+        <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0 sticky-top shadow-sm">
+            <a href="/department" class="navbar-brand p-0">
+                <h1 class="m-0" style="font-size: 30px;"><img src="{% static 'images/logo2.png' %}"> DCPE</h1>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="/department" class="nav-item nav-link">Сайт на персонала</a>
+                    <div class="nav-item dropdown">
+                        <a href="resources.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Ресурси</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="/department/rules" class="dropdown-item">Правила</a>
+                            <a href="/department/online-tables" class="dropdown-item">Онлайн таблици</a>
+                            <a href="/department/equipment-instructions" class="dropdown-item">Инструкции за работа с оборудването</a>
+                            <a href="{% static 'rules/devices-and-premises.pdf' %}" class="dropdown-item" target="_blank">Отговорници на апарати и помещения</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="/department/staff" class="nav-link dropdown-toggle"
+                            data-bs-toggle="dropdown">Персонал</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="/department/staff#AFM" class="dropdown-item">AFM лаборатория</a>
+                            <a href="/department/staff#CF" class="dropdown-item">CF лаборатория</a>
+                            <a href="/department/staff#Technician" class="dropdown-item">Техници</a>
+                            <a href="/department/staff#Students" class="dropdown-item">Студенти, включени в проекти</a>
+                        </div>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href='/department/staff/{{ user.first_name }}%20{{ user.last_name }}' style='cursor: pointer;'>Акаунт</a>
+                    {% else %}
+                        <a class="nav-item nav-link" onclick="showLogin()" style='cursor: pointer;'>Вход</a>
+                    {% endif %}
+                    <a href="bussiness" class="nav-item nav-link">Сайт на бизнеса</a>
+                    <a href="/" class="nav-item nav-link">Сайт на студентите</a>
+                    
+
+                </div>
+            </div>
+        </nav>
+    </div>
+
+        <!-- Edit Form  Start-->
+        <div class="overlay" id="edit-form-container">
+            <div class="form-container">
+            <span class="closeBtn" onclick="hideEditForm()" style="cursor:pointer;">&times;</span>
+            <h2 style='text-align:center;'> Редакция </h2>
+            <form id="addMemberForm" enctype="multipart/form-data" method="POST" action="/department/edit_member/{{staff.id}}" class="scrollable-form" onsubmit="return validateForm(event);">
+                {% csrf_token %}
+                
+                <div class="row g-3">
+                    <input type="hidden" name="member_id" value="{{ staff.id }}">
+                    <div class="col-xl-12">
+                        <input name="name_in_latin" type="text" class="form-control bg-light border-0" placeholder="Име изписано на латинеца" style="height: 55px; margin-top:10px;" value='{{staff.name}}'>
+                    </div>
+                    <div class="col-12">
+                        <input name="email" type="email" class="form-control bg-light border-0" placeholder="Служебен Email" style="height: 55px;" value='{{staff.email}}'>
+                    </div>
+                    <div class="col-12">
+                        <select name = 'category' class="form-select bg-light border-0" style="height: 55px;">
+
+                        {% if staff.get_category_display == "AFM laboratory" %}
+                            <option value="1" selected>AFM лаборатория</option>
+                        {% else %}
+                            <option value="1">AFM лаборатория</option>
+                        {% endif %}
+                        
+                        {% if staff.get_category_display == "CF laboratory" %}
+                            <option value="2" selected>CF лаборатория</option>
+                        {% else %}
+                            <option value="2">CF лаборатория</option>
+                        {% endif %}
+                        
+                        {% if staff.get_category_display == "Technicians" %}
+                            <option value="3" selected>Техник</option>
+                        {% else %}
+                            <option value="3">Техник</option>
+                        {% endif %}
+                        
+                        {% if staff.get_category_display == "Students involved in projects" %}
+                            <option value="4" selected>Студент, включен в проект</option>
+                        {% else %}
+                            <option value="4">Студент, включен в проект</option>
+                        {% endif %}
+                        </select>
+                    </div>
+
+                    <div id="researchInterestSection" class="col-12">
+                        <div id="interestsContainer">
+                            {%for research_interest in staff.research_interests%}
+                            <input type="text" placeholder="Add research interest" class="form-control bg-light border-0 mt-2" style="height: 55px;" value='{{research_interest}}'>
+                            {%endfor%}
+                        </div>
+                        <input type="hidden" id="research_interests" name="research_interests" value="{%for research_interest in staff.research_interests%}{{research_interest}}{%endfor%}">
+                        <button type="button" class="form-control bg-light border-0" style="height: 55px; margin-left:8px; margin-top:15px;" onclick='addResearchInterest(event)'>Add research interest</button>
+                        <p id="limitMessage" style="color: red; display: none;">Limit of 10 research interests reached!</p>
+                    </div>
+                    <div class="col-12">
+                        <div class="file-dropzone" {% if staff.profile_photo %}style="display: none;"{% endif %} ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                            <!-- Your file input, without value attribute -->
+                            <input name="profile_photo" type="file" id="fileInput" class="file-input" accept="image/*" onchange="displayFileName(event);">
+                            <label for="fileInput" class="drag-drop-label bg-light border-0">Drag & Drop or <span class="choose-file">Click to Choose a Photo</span></label>
+                            <span class="file-name">No file chosen</span>
+                            
+                            <!-- Hidden input to store current image path -->
+                            {% if staff.profile_photo.url and member.profile_photo.url %}
+                                <input type="hidden" name="current_profile_photo" value="{{ staff.profile_photo.url }}">
+                            {% endif %}
+                        </div>
+                                        
+                        <div class="image-container" style="display: flex; justify-content: center; align-items: center; height: 150px; position: relative;">
+                            {% if staff.profile_photo.url%}
+                            <img id="imagePreview" src="{{ staff.profile_photo.url }}" alt="Photo preview" style="max-width: 100px; max-height: 100px;">
+                            {% else %}
+                            <img id="imagePreview" src="{% static 'images/add.jpg' %}" alt="Photo preview" style="max-width: 100px; max-height: 100px;">
+                            {%endif%}
+                            <span class="change-text">Change</span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-12">
+                        <input name="short_cv" type="text" class="form-control bg-light border-0" placeholder="По желание - кратко CV" style="height: 55px;" value='{{staff.short_cv}}'>
+                    </div>
+                    <div class="col-xl-12">
+                        <input name="full_cv" type="text" class="form-control bg-light border-0" placeholder="По желание - пълно научно CV/списък с публикации" style="height: 55px;" value='{{staff.full_cv}}'>
+                    </div>
+                    <div class="col-xl-12">
+                        <input name="scopus" type="text" class="form-control bg-light border-0" placeholder="Scopus" style="height: 55px;" value='{{staff.scopus}}'>
+                    </div>
+                    <div class="col-xl-12">
+                        <input name="google_scholar" type="text" class="form-control bg-light border-0" placeholder="Google Scholar" style="height: 55px;" value='{{staff.google_scholar}}'>
+                    </div>
+                    <div class="col-xl-12">
+                        <input name="web_of_science" type="text" class="form-control bg-light border-0" placeholder="Web of Science" style="height: 55px;" value='{{staff.web_of_science}}'>
+                    </div>
+                    <div class="col-xl-12">
+                        <input name="orcid" type="text" class="form-control bg-light border-0" placeholder="ORCID" style="height: 55px;" value='{{staff.orcid}}'>
+                    </div>
+                    <div class="col-12">
+                        <textarea name="additional_info" class="form-control bg-light border-0" rows="3" placeholder="Друга информация, която бихте желали да има в личната Ви страница">{{staff.additional_info}}</textarea>
+                    </div>
+                    <div class="col-12">
+                        <input  type="submit" value="Submit" class="btn btn-primary py-md-2 px-md-5 me-3" style='width:200px;' onclick='editMember(event, {{staff.id}})'>
+                        <button type="button" onclick="hideEditForm()" class="btn  btn-outline-deepblue py-md-2 px-md-5 me-3" style='width:200px;'>Close</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+        <!-- Edit Form  END-->
+
+        <!-- Research Form  Start-->
+        <div class="overlay" id='research-form-container'>
+            <div class="form-container">
+            <span class="closeBtn" onclick="hideResearchForm()" style="cursor:pointer;">&times;</span>
+            <h2 style='text-align:center;'> Add Research </h2>
+            <form enctype="multipart/form-data" class="scrollable-form" id="researchForm" method='POST'>
+                {% csrf_token %}
+                <div class="row g-3">
+
+                    <div class="col-xl-12">
+                        <input name="title" type="text" class="form-control bg-light border-0" placeholder="Заглавие на статията" style="height: 55px; margin-top:10px;">
+                    </div>
+
+                    <div class="col-xl-12">
+                        <input name="research-link" type="url" class="form-control bg-light border-0" placeholder="Линк към статията" style="height: 55px;">
+                    </div>
+
+                    <div class="col-xl-12">
+                        <select name = 'category' class="form-select bg-light border-0" style="height: 55px;">
+                        {% if staff.get_category_display == "AFM laboratory" %}
+                            <option value="1" selected>AFM лаборатория</option>
+                            <option value="2">CF лаборатория</option>
+                        {%else%}
+                            <option value="2" selected>CF лаборатория</option>
+                            <option value="1">AFM лаборатория</option>
+                        {%endif%}
+                        </select>
+                    </div>
+
+                    <div id="writersSection" class="col-12">
+                        <div id="writersContainer">
+                            {%for writer in staff.writers%}
+                                <input type="text" placeholder="Add writer" class="form-control bg-light border-0 mt-2 writer-input" style="height: 55px;" value="{{writer}}" oninput="autoSuggest(this)">
+                            {%endfor%}
+                        </div>
+                        <input type="hidden" id="writers" name="writers" value="{%for writer in staff.writers%}{{writer}}{%endfor%}">
+                        <button type="button" class="form-control bg-light border-0" style="height: 55px; margin-left:8px;" onclick='addWriter(event)'>Add writer</button>
+                        <p id="writerLimitMessage" style="color: red; display: none;">Limit of 20 writers reached!</p>
+                    </div>
+
+                    <div class="col-12">
+                        <input type="button" value="Registrate" class="btn btn-primary py-md-2 px-md-5 me-3" style='width:200px;' onclick="validateAndCreate();">
+                        <button type="button" onclick="hideResearchForm();" class="btn  btn-outline-deepblue py-md-2 px-md-5 me-3" style='width:200px;'>Close</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+        <!-- Research Form  End-->
+
+        <!-- Features Start -->
+        <div class="container">
+            <div class="main-body">
+               <div class="row gutters-sm">
+                  <div class="col-md-4 mb-3">
+                     <div class="card">
+                        <div class="card-body">
+                           <div class="d-flex flex-column align-items-center text-center">
+
+                              {% if staff.profile_photo.url %}
+                                <img src="{{staff.profile_photo.url}}" alt="Admin" class="rounded-circle" width="150">
+                              {% else %}
+                                <img src="{% static 'images/add.jpg' %}" alt="Admin" class="rounded-circle" width="150">
+                              {% endif %}
+
+                              <div class="mt-3">
+                                 <h4>{{staff.name}}</h4>
+                                 <p class="text-secondary mb-1">{{staff.get_category_display}}</p>
+                                 <p class="text-muted font-size-sm">Sofia University, Department of Chemistry and Pharmacy Engineering</p>
+                                 <!--
+                                    <button class="btn btn-primary">Follow</button>
+                                    <button class="btn btn-outline-primary">Message</button>-->
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="card mt-3">
+                        <ul class="list-group list-group-flush">
+                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                              <h6 class="mb-0">📄Short CV</h6>
+                              <span class="text-secondary"><a href='{{staff.short_cv}}'>Short CV</a></span>
+                           </li>
+                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                              <h6 class="mb-0"><i class="fas fa-file-alt"></i> Full CV</h6>
+                              <span class="text-secondary"><a href='{{staff.full_cv}}'>Full CV</a></span>
+                           </li>
+                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                              <h6 class="mb-0"><i class="fas fa-book-open"></i> Scopus</h6>
+                              <span class="text-secondary"><a href='{{staff.scopus}}'>Scopus</a></span>
+                           </li>
+                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                              <h6 class="mb-0"><i class="fas fa-graduation-cap"></i> Google Scholar</h6>
+                              <span class="text-secondary"><a href='{{staff.google_scholar}}'>Google Scholar</a></span>
+                           </li>
+                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                              <h6 class="mb-0"><i class="fas fa-search"></i> Web of Science</h6>
+                              <span class="text-secondary"><a href='{{staff.web_of_science}}'>Web of Science</a></span>
+                           </li>
+                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                              <h6 class="mb-0"><i class="fab fa-orcid"></i> ORCID</h6>
+                              <span class="text-secondary"><a href='{{staff.orcid}}'>ORCID</a></span>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+                  <div class="col-md-8">
+                     <div class="card mb-3">
+                        <div class="card-body">
+                           <div class="row">
+                              <div class="col-sm-3">
+                                 <h6 class="mb-0">Full Name</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                 {{staff.name}}
+                              </div>
+                           </div>
+                           <hr>
+                           <div class="row">
+                              <div class="col-sm-3">
+                                 <h6 class="mb-0">Email</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                 {{staff.email}}
+                              </div>
+                           </div>
+                           <hr>
+                           <div class="row">
+                              <div class="col-sm-3">
+                                 <h6 class="mb-0">Laboratory</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                 {{staff.get_category_display}}
+                              </div>
+                           </div>
+                           <hr>
+                           <div class="row">
+                              <div class="col-sm-3">
+                                 <h6 class="mb-0">Research</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                 {{ staff.research_list|length }}
+                              </div>
+                           </div>
+                           <hr>
+
+                           {% if user.full_name == staff.name or user.is_superuser %}
+                           <div class="row">
+                              <div class="col-sm-12">
+                                 <a class="btn btn-info " target="__blank" onclick="showEditForm()">Edit</a>
+                              </div>
+                           </div>
+                           {%endif%}
+
+                        </div>
+                     </div>
+                     <div class="row gutters-sm">
+                        <div class="col-sm-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="d-flex align-items-center mb-3"><i class="fas fa-flask" style="font-size:20px;"></i>Research:</h6>
+                                    {% for research in staff.research_list %}
+                                    <div class="research-item">
+                                        <small style="display:flex; justify-content: space-between; align-items: center; font-size:20px; margin-bottom:10px;">
+                                            <a href="{{ research.link }}">{{ research }}</a>
+                                            <!-- Check if there's a document available for download -->
+                                            {% if research.document %}
+                                            <a href="{{ research.document.url }}" class="download-btn">Download <i class='fa fa-download' style='font-size:16px;'></i></a>
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                    {% endfor %}
+                                    <!-- Add Research Button -->
+                                    <div class="mt-3">
+                                        <a onclick='showResearchForm()' class="btn btn-primary" id='add-research-btn' style='cursor:pointer;'>Add Research</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                           <div class="card h-100">
+                              <div class="card-body">
+                                 <h6 class="d-flex align-items-center mb-3"><i class="fa fa-book" style='font-size:20px;'></i>Research Interests:</h6>
+                                 {% for research_interest in staff.research_interests %}
+                                 <small style='display:block; font-size:20px; margin-bottom:10px;'>{{research_interest}}</small>
+                                 {% endfor %}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-light mt-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="container">
+                <div class="row gx-5">
+                    <div class="col-lg-4 col-md-6 footer-about">
+                        <div
+                            class="d-flex flex-column align-items-center justify-content-center text-center h-100 bg-primary p-4">
+                            <a href="/" class="navbar-brand">
+                                <h1 class="m-0 text-white"><i class="fa fa-flask me-2"></i>DCPE</h1>
+                            </a>
+                            <p class="mt-3 mb-4">Pioneering progress at the intersection of chemical and pharmaceutical
+                                engineering. Committed to fostering innovation, research, and professional growth.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-6">
+                        <div class="row gx-5">
+                            <div class="col-lg-4 col-md-12 pt-5 mb-5">
+                                <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                    <h3 class="text-light mb-0">Contact</h3>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <i class="bi bi-geo-alt text-primary me-2"></i>
+                                    <p class="mb-0"><a href="https://goo.gl/maps/kgj6bvbXmDwYtUA38"
+                                            style="text-decoration: underline; color: white;" target="_blank">Faculty of
+                                            Chemistry and Pharmacy at the University of Sofia</a></p>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <i class="bi bi-envelope-open text-primary me-2"></i>
+                                    <p class="mb-0">lcpe@lcpe.uni-sofia.bg</p>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <i class="bi bi-telephone text-primary me-2"></i>
+                                    <p class="mb-0">+359 2 9625643</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12 pt-0 pt-lg-5 mb-5">
+                                <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                    <h3 class="text-light mb-0">Quick Links</h3>
+                                </div>
+                                <div class="link-animated d-flex flex-column justify-content-start">
+                                    <a class="text-light mb-2" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>Home</a>
+                                    <a class="text-light mb-2" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>About Us</a>
+                                    <a class="text-light mb-2" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>Our Programs</a>
+                                    <a class="text-light mb-2" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>Meet Our Faculty</a>
+                                    <a class="text-light mb-2" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>Research Opportunities</a>
+                                    <a class="text-light" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>Contact Us</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12 pt-0 pt-lg-5 mb-5">
+                                <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                    <h3 class="text-light mb-0">Student Resources</h3>
+                                </div>
+                                <div class="link-animated d-flex flex-column justify-content-start">
+                                    <a class="text-light mb-2" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>Course Catalog</a>
+                                    <a class="text-light mb-2" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>Academic Calendar</a>
+                                    <a class="text-light mb-2" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>Student Services</a>
+
+                                    <a class="text-light" href="#"><i
+                                            class="bi bi-arrow-right text-primary me-2"></i>Career Services</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid text-white" style="background: #061429;">
+            <div class="container text-center">
+                <div class="row justify-content-end">
+                    <div class="col-lg-8 col-md-6">
+                        <div class="d-flex align-items-center justify-content-center" style="height: 75px;">
+                            <p class="mb-0">&copy; <a class="text-white border-bottom" href="#">DCPE</a>. All
+                                Rights Reserved.
+
+                                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                                Designed by <a class="text-white border-bottom" href="https://htmlcodex.com">HTML
+                                    Codex</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+        <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+        <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+        <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+        <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+        <script src="{% static 'js/form.js' %}"></script>
+        <!-- Template Javascript -->
+        <script src="{% static 'js/main.js' %}"></script>
+        <script src="{% static 'js/login.js' %}"></script>
+        <script src="{% static 'js/research.js' %}"></script>
+        <script>
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 45) {
+                    $('.navbar').addClass('sticky-top shadow-sm');
+                } else {
+                    $('.navbar').addClass('sticky-top shadow-sm');
+                }
+            });
+          
+        </script>
+        <!-- Custom JS-->
+</body>
+
+</html>
