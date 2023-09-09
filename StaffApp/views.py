@@ -17,9 +17,9 @@ def staff(request):
     members = Member.objects.all()
 
     is_superstaff = request.user.is_superuser
-    print(is_superstaff)
+    #print(is_superstaff)
 
-    return render(request, 'StaffApp/faculty-members.html', {'members': members, 'is_superstaff':is_superstaff})
+    return render(request, 'StaffApp/faculty-members.html', {'members': members[::-1], 'is_superstaff':is_superstaff})
 
 def online_tables(request):
     return render(request, 'StaffApp/online-tables.html')
@@ -28,6 +28,7 @@ def add_member(request):
     if request.method == "POST":
         name_in_latin = request.POST.get('name_in_latin')
         email = request.POST.get('email')
+        position = request.POST.get('position')
         category = request.POST.get('category')
         research_interests = request.POST.get('research_interests')  # Depending on how you implement this
         profile_photo = request.FILES.get('profile_photo')
@@ -43,6 +44,7 @@ def add_member(request):
         member = Member(
             name=name_in_latin,
             email=email,
+            position = position,
             category=category,
             research_interests=research_interests,
             profile_photo=profile_photo,

@@ -21,6 +21,20 @@ class Member(models.Model):
         (4, "Students involved in projects"),
     ]
     category = models.PositiveSmallIntegerField(choices=CATEGORY_CHOICES)
+
+    POSITION_CHOICES = [       
+        (1, "Professor"),
+        (2, "Assoc. Professor"),
+        (3, "Assist. Professor"),
+        (4, "Post Doc"),
+        (5, "PhD Student"),
+        (6, "MSc Student"),
+        (7, "BSc Student"),
+        (8, "Technician"),
+        (9, "Staff on project"),
+    ]
+    position = models.PositiveSmallIntegerField(choices=POSITION_CHOICES, blank=True, null=True)
+
     research_interests = models.TextField(verbose_name="Research Interests", blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
     short_cv = models.TextField(blank=True, null=True, verbose_name="По желание - кратко CV")
