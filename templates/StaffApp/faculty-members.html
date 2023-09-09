@@ -240,6 +240,20 @@
                     <input name="email" type="email" class="form-control bg-light border-0" placeholder="Служебен Email" style="height: 55px;">
                 </div>
                 <div class="col-12">
+                    <select name = 'position' class="form-select bg-light border-0" style="height: 55px;">
+                        <option selected="">Позиция</option>
+                        <option value="1">Professor</option>
+                        <option value="2">Assoc. Professor</option>
+                        <option value="3">Assist. Professor</option>
+                        <option value="4">Post Doc</option>
+                        <option value="5">PhD Student</option>
+                        <option value="6">MSc Student</option>
+                        <option value="7">BSc Student</option>
+                        <option value="8">Technician</option>
+                        <option value="9">Staff on project</option>
+                    </select>
+                </div>
+                <div class="col-12">
                     <select name = 'category' class="form-select bg-light border-0" style="height: 55px;">
                     <option selected="">Категория</option>
                     <option value="1">AFM лаборатория</option>
@@ -303,31 +317,33 @@
         </div>
         <div class="row g-5 text-center">
                 {% for member in members %}
-                    {% if member.category == 1 %}
-                    <div class="col-md-3 wow slideInUp member-box" data-wow-delay="0.1s" style="position: relative;">
-                        <!-- Delete Button (bin) - Top Right -->
-                        {% if is_superstaff %}
-                        <button class="btn position-absolute top-0 end-0 btn-delete" data-id="{{ member.id }}" onclick="deleteStaff(this)" style="z-index: 10;"> 
-                            <i class="fas fa-trash-alt fa-lg"></i>
-                        </button>
-                        
-                        <!-- Edit Button (pencil) - Top Left -->
-                        <button class="btn position-absolute top-0 start-0 btn-edit" style="z-index: 10;">
-                            <i class="fas fa-pencil-alt fa-lg"></i>
-                        </button>
-                        {% endif %}
-                        <a href="/department/staff/{{ member.name }}" target="_blank"> <!-- Assuming you've a separate HTML page for each member using their id -->
-                            <div class="rounded-circle overflow-hidden d-inline-block img-hover-container">
-                                <img class="img-fluid" src="{{member.profile_photo.url}}" alt="" style="border-radius: 50%;"> <!-- Assuming you have a photo field in your Member model -->
-                                <div class="img-hover-content text-center">
-                                    <i class="fas fa-info"></i>
-                                    <p class="mt-2">Научи още</p>
-                                </div>
+                    {% if member.profile_photo and member.profile_photo.url %}
+                        {% if member.category == 1 %}
+                            <div class="col-md-3 wow slideInUp member-box" data-wow-delay="0.1s" style="position: relative;">
+                                <!-- Delete Button (bin) - Top Right -->
+                                {% if is_superstaff %}
+                                <button class="btn position-absolute top-0 end-0 btn-delete" data-id="{{ member.id }}" onclick="deleteStaff(this)" style="z-index: 10;"> 
+                                    <i class="fas fa-trash-alt fa-lg"></i>
+                                </button>
+                                
+                                <!-- Edit Button (pencil) - Top Left -->
+                                <button class="btn position-absolute top-0 start-0 btn-edit" style="z-index: 10;">
+                                    <i class="fas fa-pencil-alt fa-lg"></i>
+                                </button>
+                                {% endif %}
+                                <a href="/department/staff/{{ member.name }}" target="_blank"> <!-- Assuming you've a separate HTML page for each member using their id -->
+                                    <div class="rounded-circle overflow-hidden d-inline-block img-hover-container">
+                                        <img class="img-fluid" src="{{member.profile_photo.url}}" alt="" style="border-radius: 50%;"> <!-- Assuming you have a photo field in your Member model -->
+                                        <div class="img-hover-content text-center">
+                                            <i class="fas fa-info"></i>
+                                            <p class="mt-2">Научи още</p>
+                                        </div>
+                                    </div>
+                                    <h5 class="mt-2">{{ member.get_position_display }} {{ member.name }}</h5>
+                                    <p>{{ member.get_category_display }}</p> <!-- You can adjust the fields based on your Member model -->
+                                </a>
                             </div>
-                            <h5 class="mt-2">{{ member.name }}</h5>
-                            <p>{{ member.get_category_display }}</p> <!-- You can adjust the fields based on your Member model -->
-                        </a>
-                    </div>
+                        {%endif%}
                     {%endif%}
                 {% endfor %}
             
@@ -349,21 +365,35 @@
         <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
             <h1 class="mb-0" id='CF'>Complex Fluids Лаборатория</h1>
         </div>
+        <div class="row g-5 text-center">
             {% for member in members %}
-                {% if member.category == 2 %}
-                    <div class="col-md-3 wow slideInUp" data-wow-delay="0.1s">
-                        <a href="/department/staff/{{ member.name }}" target="_blank"> <!-- Assuming you've a separate HTML page for each member using their id -->
-                            <div class="rounded-circle overflow-hidden d-inline-block img-hover-container">
-                                <img class="img-fluid" src="{{member.profile_photo.url}}" alt="" style="border-radius: 50%;"> <!-- Assuming you have a photo field in your Member model -->
-                                <div class="img-hover-content text-center">
-                                    <i class="fas fa-info"></i>
-                                    <p class="mt-2">Научи още</p>
+                {% if member.profile_photo and member.profile_photo.url %}
+                    {% if member.category == 2 %}
+                        <div class="col-md-3 wow slideInUp member-box" data-wow-delay="0.1s" style="position: relative;">
+                            <!-- Delete Button (bin) - Top Right -->
+                            {% if is_superstaff %}
+                            <button class="btn position-absolute top-0 end-0 btn-delete" data-id="{{ member.id }}" onclick="deleteStaff(this)" style="z-index: 10;"> 
+                                <i class="fas fa-trash-alt fa-lg"></i>
+                            </button>
+                            
+                            <!-- Edit Button (pencil) - Top Left -->
+                            <button class="btn position-absolute top-0 start-0 btn-edit" style="z-index: 10;">
+                                <i class="fas fa-pencil-alt fa-lg"></i>
+                            </button>
+                            {% endif %}
+                            <a href="/department/staff/{{ member.name }}" target="_blank"> <!-- Assuming you've a separate HTML page for each member using their id -->
+                                <div class="rounded-circle overflow-hidden d-inline-block img-hover-container">
+                                    <img class="img-fluid" src="{{member.profile_photo.url}}" alt="" style="border-radius: 50%;"> <!-- Assuming you have a photo field in your Member model -->
+                                    <div class="img-hover-content text-center">
+                                        <i class="fas fa-info"></i>
+                                        <p class="mt-2">Научи още</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <h5 class="mt-2">{{ member.name }}</h5>
-                            <p>{{ member.get_category_display }}</p> <!-- You can adjust the fields based on your Member model -->
-                        </a>
-                    </div>
+                                <h5 class="mt-2">{{ member.get_position_display }} {{ member.name }}</h5>
+                                <p>{{ member.get_category_display }}</p> <!-- You can adjust the fields based on your Member model -->
+                            </a>
+                        </div>
+                    {%endif%}
                 {%endif%}
             {% endfor %}
 
@@ -380,27 +410,41 @@
                 </a>
             </div>
             {% endif %}
-            
+        </div>
+        
         <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
             <h1 class="mb-0" id='Technician'>Техници</h1>
         </div>
         <div class="row g-5 text-center">
 
             {% for member in members %}
-                {% if member.category == 3 %}
-                    <div class="col-md-3 wow slideInUp" data-wow-delay="0.1s">
-                        <a href="/department/staff/{{ member.name }}" target="_blank"> <!-- Assuming you've a separate HTML page for each member using their id -->
-                            <div class="rounded-circle overflow-hidden d-inline-block img-hover-container">
-                                <img class="img-fluid" src="{{member.profile_photo.url}}" alt="" style="border-radius: 50%;"> <!-- Assuming you have a photo field in your Member model -->
-                                <div class="img-hover-content text-center">
-                                    <i class="fas fa-info"></i>
-                                    <p class="mt-2">Научи още</p>
+                {% if member.profile_photo and member.profile_photo.url %}
+                    {% if member.category == 3 %}
+                        <div class="col-md-3 wow slideInUp member-box" data-wow-delay="0.1s" style="position: relative;">
+                            <!-- Delete Button (bin) - Top Right -->
+                            {% if is_superstaff %}
+                            <button class="btn position-absolute top-0 end-0 btn-delete" data-id="{{ member.id }}" onclick="deleteStaff(this)" style="z-index: 10;"> 
+                                <i class="fas fa-trash-alt fa-lg"></i>
+                            </button>
+                            
+                            <!-- Edit Button (pencil) - Top Left -->
+                            <button class="btn position-absolute top-0 start-0 btn-edit" style="z-index: 10;">
+                                <i class="fas fa-pencil-alt fa-lg"></i>
+                            </button>
+                            {% endif %}
+                            <a href="/department/staff/{{ member.name }}" target="_blank"> <!-- Assuming you've a separate HTML page for each member using their id -->
+                                <div class="rounded-circle overflow-hidden d-inline-block img-hover-container">
+                                    <img class="img-fluid" src="{{member.profile_photo.url}}" alt="" style="border-radius: 50%;"> <!-- Assuming you have a photo field in your Member model -->
+                                    <div class="img-hover-content text-center">
+                                        <i class="fas fa-info"></i>
+                                        <p class="mt-2">Научи още</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <h5 class="mt-2">{{ member.name }}</h5>
-                            <p>{{ member.get_category_display }}</p> <!-- You can adjust the fields based on your Member model -->
-                        </a>
-                    </div>
+                                <h5 class="mt-2">{{ member.get_position_display }} {{ member.name }}</h5>
+                                <p>{{ member.get_category_display }}</p> <!-- You can adjust the fields based on your Member model -->
+                            </a>
+                        </div>
+                    {%endif%}
                 {%endif%}
             {% endfor %}
 
@@ -425,20 +469,33 @@
         <div class="row g-5 text-center">
 
             {% for member in members %}
-                {% if member.category == 4 %}
-                    <div class="col-md-3 wow slideInUp" data-wow-delay="0.1s">
-                        <a href="/department/staff/{{ member.name }}" target="_blank"> <!-- Assuming you've a separate HTML page for each member using their id -->
-                            <div class="rounded-circle overflow-hidden d-inline-block img-hover-container">
-                                <img class="img-fluid" src="{{member.profile_photo.url}}" alt="" style="border-radius: 50%;"> <!-- Assuming you have a photo field in your Member model -->
-                                <div class="img-hover-content text-center">
-                                    <i class="fas fa-info"></i>
-                                    <p class="mt-2">Научи още</p>
+                {% if member.profile_photo and member.profile_photo.url %}
+                    {% if member.category == 4 %}
+                        <div class="col-md-3 wow slideInUp member-box" data-wow-delay="0.1s" style="position: relative;">
+                            <!-- Delete Button (bin) - Top Right -->
+                            {% if is_superstaff %}
+                            <button class="btn position-absolute top-0 end-0 btn-delete" data-id="{{ member.id }}" onclick="deleteStaff(this)" style="z-index: 10;"> 
+                                <i class="fas fa-trash-alt fa-lg"></i>
+                            </button>
+                            
+                            <!-- Edit Button (pencil) - Top Left -->
+                            <button class="btn position-absolute top-0 start-0 btn-edit" style="z-index: 10;">
+                                <i class="fas fa-pencil-alt fa-lg"></i>
+                            </button>
+                            {% endif %}
+                            <a href="/department/staff/{{ member.name }}" target="_blank"> <!-- Assuming you've a separate HTML page for each member using their id -->
+                                <div class="rounded-circle overflow-hidden d-inline-block img-hover-container">
+                                    <img class="img-fluid" src="{{member.profile_photo.url}}" alt="" style="border-radius: 50%;"> <!-- Assuming you have a photo field in your Member model -->
+                                    <div class="img-hover-content text-center">
+                                        <i class="fas fa-info"></i>
+                                        <p class="mt-2">Научи още</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <h5 class="mt-2">{{ member.name }}</h5>
-                            <p>{{ member.get_category_display }}</p> <!-- You can adjust the fields based on your Member model -->
-                        </a>
-                    </div>
+                                <h5 class="mt-2">{{ member.get_position_display }} {{ member.name }}</h5>
+                                <p>{{ member.get_category_display }}</p> <!-- You can adjust the fields based on your Member model -->
+                            </a>
+                        </div>
+                    {%endif%}
                 {%endif%}
             {% endfor %}
             

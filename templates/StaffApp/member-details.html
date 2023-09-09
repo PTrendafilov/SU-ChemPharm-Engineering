@@ -182,11 +182,17 @@
                             <span class="file-name">No file chosen</span>
                             
                             <!-- Hidden input to store current image path -->
-                            <input type="hidden" name="current_profile_photo" value="{{ staff.profile_photo.url }}">
+                            {% if staff.profile_photo.url and member.profile_photo.url %}
+                                <input type="hidden" name="current_profile_photo" value="{{ staff.profile_photo.url }}">
+                            {% endif %}
                         </div>
                                         
-                        <div class="image-container" {% if not staff.profile_photo %}style="display: none;"{% else %}style="display: flex;"{% endif %} justify-content: center; align-items: center; height: 150px; position: relative;">
+                        <div class="image-container" style="display: flex; justify-content: center; align-items: center; height: 150px; position: relative;">
+                            {% if staff.profile_photo.url%}
                             <img id="imagePreview" src="{{ staff.profile_photo.url }}" alt="Photo preview" style="max-width: 100px; max-height: 100px;">
+                            {% else %}
+                            <img id="imagePreview" src="{% static 'images/add.jpg' %}" alt="Photo preview" style="max-width: 100px; max-height: 100px;">
+                            {%endif%}
                             <span class="change-text">Change</span>
                         </div>
                     </div>
@@ -254,7 +260,7 @@
                     <div id="writersSection" class="col-12">
                         <div id="writersContainer">
                             {%for writer in staff.writers%}
-                            <input type="text" placeholder="Add writer" class="form-control bg-light border-0 mt-2 writer-input" style="height: 55px;" value="{{writer}}" oninput="autoSuggest(this)">
+                                <input type="text" placeholder="Add writer" class="form-control bg-light border-0 mt-2 writer-input" style="height: 55px;" value="{{writer}}" oninput="autoSuggest(this)">
                             {%endfor%}
                         </div>
                         <input type="hidden" id="writers" name="writers" value="{%for writer in staff.writers%}{{writer}}{%endfor%}">
@@ -280,7 +286,13 @@
                      <div class="card">
                         <div class="card-body">
                            <div class="d-flex flex-column align-items-center text-center">
-                              <img src="{{staff.profile_photo.url}}" alt="Admin" class="rounded-circle" width="150">
+
+                              {% if staff.profile_photo.url %}
+                                <img src="{{staff.profile_photo.url}}" alt="Admin" class="rounded-circle" width="150">
+                              {% else %}
+                                <img src="{% static 'images/add.jpg' %}" alt="Admin" class="rounded-circle" width="150">
+                              {% endif %}
+
                               <div class="mt-3">
                                  <h4>{{staff.name}}</h4>
                                  <p class="text-secondary mb-1">{{staff.get_category_display}}</p>
